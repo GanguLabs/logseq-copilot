@@ -48,7 +48,7 @@
     <main>
       <article>
         <h1>Logseq Copilot</h1>
-        <h2>Connect your browser with you Logseq.</h2>
+        <h2>Connect browser with Logseq</h2>
         <div class="downloads">
           <a
             href="https://chrome.google.com/webstore/detail/logseq-copilot/hihgfcgbmnbomabfdbajlbpnacndeihl"
@@ -65,12 +65,12 @@
         </div>
 
         <p>
-          <b>Do you also love taking notes with Logseq?</b>
+          <b>Are you also a note-taker with Logseq?</b>
         </p>
         <p>
           <b
-            >Do you often feel frustrated because it's difficult to search
-            through your notes when you have too many of them?</b
+            >Are you often frustrated because it's difficult to search through
+            your notes when you have too many?</b
           >
         </p>
 
@@ -98,18 +98,18 @@
         </p>
         <ul class="main-features">
           <li>
-            <span>Seaching on Browser</span><p>
-              Searching Your Logseq nots when you Searing on Browser.
+            <span>Search in your browser</span><p>
+              Search your Logseq notes when you search in your browser.
             </p>
           </li>
           <li>
-            <span>[WIP] Quick Capture with notes</span><p>
-              Capture to your Idea immediately.
+            <span>[WIP] Quick Capture with Notes</span><p>
+              Record highlights with your idea immediately.
             </p>
           </li>
           <li>
-            <span>[WIP] Bring note related to tab</span><p>
-              Searching Your Logseq nots when you Searing on Browser.
+            <span>[WIP] Bring note to tab</span><p>
+              Search your Logseq notes by the tabs you are currently using.
             </p>
           </li>
         </ul>
@@ -175,8 +175,8 @@
     }
 
     .downloads {
-      @apply py-12 flex flex-row justify-between content-around w-full;
-      max-width: 72ch;
+      @apply py-12 flex flex-row flex-wrap justify-center content-around gap-4 w-full;
+
       a {
         @apply flex flex-row justify-center items-center shadow-xl rounded-2xl bg-gray-100 h-16 gap-2 text-lg text-white;
         width: 200px;
@@ -196,10 +196,10 @@
     }
 
     ul {
-      @apply flex flex-row flex-wrap list-inside gap-8 w-full content-around justify-around py-8;
+      @apply flex sm:flex-row flex-col flex-wrap list-inside gap-8 w-full content-around justify-around py-8;
 
       li {
-        @apply text-gray-400 w-1/4 flex flex-col;
+        @apply text-gray-400 sm:w-1/4 w-full flex flex-col;
 
         span {
           @apply text-white;
