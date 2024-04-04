@@ -49,8 +49,9 @@ export default function Popup() {
       if (!tab || !tab.url) return;
 
       const tabURL = new URL(tab.url);
-      const result = await service.urlSearch(tabURL, { fuzzy: true });
+      const result = await service.urlSearch(tabURL, tab.title ?? "", { fuzzy: true });
 
+      console.log({result})
       if (result.status !== 200) return;
 
       setLogseqSearchResult(result.response!);
@@ -69,14 +70,16 @@ export default function Popup() {
           <span>Graph: {logseqSearchResult?.graph}</span>
           <IconSettings size={16} onClick={openSettingsPage} />
         </div>
-        {logseqSearchResult?.blocks.slice(0, 20).map((block) => (
+        {/* {logseqSearchResult?.blocks.slice(0, 20).map((block) => ( */}
+       {logseqSearchResult && logseqSearchResult.blocks && 
           <LogseqBlock
-            key={block.uuid}
-            graph={logseqSearchResult?.graph}
-            blocks={[block]}
+            // key={block.uuid}
+            graph={logseqSearchResult.graph}
+            blocks={logseqSearchResult.blocks.slice(0, 20)}
             isPopUp={true}
           />
-        ))}
+       }
+        {/* ))} */}
       </div>
     </div>
   );

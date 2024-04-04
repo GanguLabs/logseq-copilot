@@ -48,7 +48,7 @@ export default class LogseqService {
     return renderBlock(block, graph, query);
   }
 
-  public async urlSearch(url: URL, opt: { fuzzy: boolean } = { fuzzy: false }) {
+  public async urlSearch(url: URL, tabTitle: string, opt: { fuzzy: boolean } = { fuzzy: false }) {
     const graph = await this.getGraph();
     const blockUuidSet = new Set();
     const blocks: LogseqBlockType[] = [];
@@ -61,9 +61,12 @@ export default class LogseqService {
       blocks.push(block);
     };
 
-    const find = async (url: string) => {
+    const find = async (url: string, fuzzy: boolean = false) => {
       const results = await this.logseqClient.find(url);
-      results.forEach(blockAdd);
+      results?.forEach((b: LogseqBlockType)=>{
+        b.fuzzyResult = fuzzy;
+        blockAdd(b);
+      });
     };
 
     if (url.hash) {
@@ -73,14 +76,23 @@ export default class LogseqService {
       await find(url.host + url.pathname + url.search);
     }
 
-    if (url.pathname) {
+    if (url.pathname && this.isUrlPathnameValid(url)) {
       await find(url.host + url.pathname);
+    }
+
+    if(typeof tabTitle =="string" && tabTitle !== ""){
+      // typically all brower window titles have company name at the end. Below code removes it from the title
+      const splitTitle = tabTitle.split("-");
+      splitTitle.pop();
+      const titleWithoutCompanyName = splitTitle.join("").trim();
+      // console.log({titleWithoutCompanyName})
+      await find(titleWithoutCompanyName);
     }
 
     const count = blocks.length;
 
-    if (url.host && opt.fuzzy) {
-      await find(url.host);
+    if (url.host && opt.fuzzy && this.isUrlPathnameValid(url)) {
+      await find(url.host, opt.fuzzy);
     }
 
     return {
@@ -94,6 +106,15 @@ export default class LogseqService {
       },
       count: count,
     };
+  }
+
+  private isUrlPathnameValid(url: URL) {
+    if(url.origin == "https://www.youtube.com" && url.pathname == '/watch') {
+      return false;
+    }
+
+    return true;
+
   }
 
   public async changeBlockMarker(uuid: string, marker: string) {

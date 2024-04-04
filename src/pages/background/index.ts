@@ -111,17 +111,18 @@ browser.tabs.onActivated.addListener((activeInfo) => {
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (tab.active && changeInfo.status === 'complete') {
     const promise = new Promise(async () => {
-      await debounceBadgeSearch(tab.url, tabId);
+      await debounceBadgeSearch(tab.url, tab.title ?? "", tabId);
     });
     promise.catch((err) => console.error(err));
   }
 });
 
-const badgeSearch = async (url: string | undefined, tabId: number) => {
+const badgeSearch = async (url: string | undefined, tabTitle: string, tabId: number) => {
   if (!url) return;
   const searchURL = new URL(url);
-  const searchRes = await logseqService.urlSearch(searchURL);
+  const searchRes = await logseqService.urlSearch(searchURL, tabTitle);
   const resultCount = searchRes.count ? searchRes.count!.toString() : '';
+  // console.log({resultCount, searchRes})
   await setExtensionBadge(resultCount, tabId);
 };
 
