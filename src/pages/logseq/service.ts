@@ -69,6 +69,8 @@ export default class LogseqService {
       });
     };
 
+    this.correctUrlPerWebsite(url);
+
     if (url.hash) {
       await find(url.host + url.pathname + url.search + url.hash);
     }
@@ -76,7 +78,7 @@ export default class LogseqService {
       await find(url.host + url.pathname + url.search);
     }
 
-    if (url.pathname && this.isUrlPathnameValid(url)) {
+    if (url.pathname && this.isUrlValidForFuzzy(url)) {
       await find(url.host + url.pathname);
     }
 
@@ -91,7 +93,7 @@ export default class LogseqService {
 
     const count = blocks.length;
 
-    if (url.host && opt.fuzzy && this.isUrlPathnameValid(url)) {
+    if (url.host && opt.fuzzy && this.isUrlValidForFuzzy(url)) {
       await find(url.host, opt.fuzzy);
     }
 
@@ -108,13 +110,40 @@ export default class LogseqService {
     };
   }
 
-  private isUrlPathnameValid(url: URL) {
-    if(url.origin == "https://www.youtube.com" && url.pathname == '/watch') {
+  private isUrlValidForFuzzy(url: URL) {
+    if(url.host.includes("youtube.com")) {
+      // ignore youtube video's for fuzzy search
+      return false;
+    }
+
+    if(url.host.includes("marketplace.visualstudio.com") && url.pathname == '/items') {
+      // ignore marketplace.visualstudio.com for fuzzy search
       return false;
     }
 
     return true;
 
+  }
+
+  private correctUrlPerWebsite(url: URL) {
+    if(url.host.includes("youtube.com") && url.pathname == '/watch') {
+      // for youtube url's remove the search params except 'v'
+      // this is usefult for video url's from playlist - example below:
+      // https://www.youtube.com/watch?v=VQut4xOcPvE&list=PLFwqDjxup1l2dN53NoPhBvLSJWtN6pZ3o&index=35
+
+      const searchParamKeys = [];
+      for (const key of url.searchParams.keys()) {
+        searchParamKeys.push(key);
+      }
+
+      if(searchParamKeys.length > 1) {
+        searchParamKeys.forEach((key) => {
+          if(key !== 'v') {
+            url.searchParams.delete(key);
+          }
+        })
+      }
+    }
   }
 
   public async changeBlockMarker(uuid: string, marker: string) {
