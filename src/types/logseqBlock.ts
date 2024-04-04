@@ -13,6 +13,7 @@ export type LogseqBlockType = {
   format: string;
   marker: string;
   priority: string;
+  fuzzyResult?: boolean;
 };
 
 export type LogseqPageContentType = {

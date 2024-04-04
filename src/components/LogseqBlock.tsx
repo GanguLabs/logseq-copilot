@@ -115,9 +115,14 @@ export const LogseqBlock = ({ graph, blocks }: LogseqBlockProps) => {
         </div>
         <div className={styles.blockBody}>
           <ul className={styles.blockContentList}>
-            {blocks.map((block) => {
+            {blocks.map((block: LogseqBlockType) => {
               return(
-                <li className={styles.blockContentListItem}>
+                <li className={styles.blockContentListItem + " " + (block.fuzzyResult ? styles.fuzzyResult : "")}>
+                  {block.fuzzyResult && 
+                  <span className={styles.fuzzyResultTooltip} title='this block is a result of fuzzy search - searching the website domain'>
+                    Fuzzy Search
+                  </span>
+                  }
                   <div className={styles.blockContentRoot} >
                     {markerRender(block.marker)}{' '}
                     <div className={styles.blockContent} dangerouslySetInnerHTML={{ __html: block.html }} />

@@ -84,11 +84,52 @@
   // @apply list-inside;
   padding: 1px 3px;
   border-radius: 3px;
+  position: relative;
+
+  &:hover{
+    background-color: hsl(0deg 0% 40% / 30%);
+
+    .fuzzyResultTooltip{
+      display: initial;
+    }
+  }
+
+  &.fuzzyResult{
+    background: hsl(0deg 68% 42% / 30%);
+  
+    &:hover{
+      background-color: hsl(0deg 68% 42% / 10%);
+  
+      // &::before{
+      //   content: "fuzzy";
+      //   position: absolute;
+      //   background: firebrick;
+      //   padding: 1px 3px;
+      //   border-radius: 3px;
+      //   text-wrap: nowrap;
+      //   right: 100%;
+      //   top: 50%;
+      //   transform: translateY(-50%);
+      // }
+  
+    }
+  }
 }
 
-.blockContentListItem:hover{
-  background-color: hsl(0deg 0% 40% / 30%);
+.fuzzyResultTooltip{
+  display: none;
+  // pointer-events: none;
+  position: absolute;
+  background: firebrick;
+  padding: 1px 3px;
+  border-radius: 3px;
+  text-wrap: nowrap;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(-60%);
 }
+
+
 
 .blockContentRoot{
   display: flex;
