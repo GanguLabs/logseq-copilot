@@ -3,18 +3,21 @@ import styles from './logseq.module.scss';
 import Browser from 'webextension-polyfill';
 import { LogseqBlock } from './LogseqBlock';
 import LogseqPageLink from './LogseqPage';
+import { LogseqPageIdenity, LogseqBlockType } from '@/types/logseqBlock';
 
-const LogseqCopilot = ({ graph, pages, blocks }) => {
+
+const LogseqCopilot = ({ graph, pages, blocks }:{graph: string, pages: LogseqPageIdenity[] , blocks: LogseqBlockType[]}) => {
   const goOptionPage = () => {
     Browser.runtime.sendMessage({ type: 'open-options' });
   };
 
-  const groupedBlocks = blocks.reduce((groups, item) => {
-    const group = (groups[item.page.name] || []);
+  const groupedBlocks = blocks.reduce((groups: Record<string, Record<string,LogseqBlockType[]>>, item: LogseqBlockType) => {
+    const searchTypeGroup = item.blockSearchType ? groups[item.blockSearchType] : groups.default ;
+    const group = (searchTypeGroup[item.page.name] || []);
     group.push(item);
-    groups[item.page.name] = group;
+    searchTypeGroup[item.page.name] = group;
     return groups;
-  }, {});
+  }, {default: {}});
 
   console.log({groupedBlocks, blocks})
 
@@ -28,13 +31,35 @@ const LogseqCopilot = ({ graph, pages, blocks }) => {
     }
     return (
       <div className={styles.blocks}>
-        {Object.entries(groupedBlocks).map(([key, blocks], i) => {
+        {Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
           // return blockGroup.map((block) => {
-            return <LogseqBlock key={key} blocks={blocks} graph={graph} />;
+            const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
+            return (
+            <LogseqBlock key={key} blocks={allBlocksinPage} graph={graph} />
+            )});
           // });
-        })}
+
+          return(
+            <>
+              {(Object.keys(groupedBlocks).length == 1 && Object.keys(groupedBlocks)[0] == "default") ? <></> : <p>{key}</p>} 
+              {logseqPageBlocks}
+            </>
+          )})}
       </div>
     );
+
+    // {Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
+    //   return(
+    //     <p>
+    //       {Object.keys(groupedBlocks).length === 1 && "Default"} 
+    //     <p/>;
+    //     {Object.entries(searchTypeGroupBlocks).map(([key, blocks], i) => {
+    //     // return blockGroup.map((block) => {
+    //       return <LogseqBlock key={key} blocks={blocks} graph={graph} />;
+    //     // });
+    //     }
+    //   )
+    // })}
   };
 
   const pagesRender = () => {

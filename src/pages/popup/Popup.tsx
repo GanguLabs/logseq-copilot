@@ -1,7 +1,7 @@
 import Browser from 'webextension-polyfill';
 import { useEffect, useState } from 'react';
 import React from 'react';
-import { LogseqSearchResult } from '@/types/logseqBlock';
+import { BlockSearchType, LogseqBlockType, LogseqSearchResult } from '@/types/logseqBlock';
 import { IconSettings } from '@tabler/icons-react';
 
 import { LogseqBlock } from '@components/LogseqBlock';
@@ -51,7 +51,7 @@ export default function Popup() {
       const tabURL = new URL(tab.url);
       const result = await service.urlSearch(tabURL, tab.title ?? "", { fuzzy: true });
 
-      console.log({result})
+      console.log({ result })
       if (result.status !== 200) return;
 
       setLogseqSearchResult(result.response!);
@@ -63,6 +63,19 @@ export default function Popup() {
     Browser.runtime.sendMessage({ type: 'open-options' });
   };
 
+  const groupedBlocks = logseqSearchResult?.blocks.reduce((groups: Record<string, Record<string, LogseqBlockType[]>>, item: LogseqBlockType) => {
+    if (groups.default === undefined) groups.default = {};
+    if (item.blockSearchType && groups[item.blockSearchType] === undefined) {
+      groups[item.blockSearchType] = {};
+    };
+    const searchTypeGroup = item.blockSearchType ? groups[item.blockSearchType] : groups.default;
+    console.log({ searchTypeGroup, item, groups })
+    const group = (searchTypeGroup[item.page.name] || []);
+    group.push(item);
+    searchTypeGroup[item.page.name] = group;
+    return groups;
+  }, { default: {} });
+
   return (
     <div className="copilot">
       <div className={styles.content}>
@@ -71,14 +84,38 @@ export default function Popup() {
           <IconSettings size={16} onClick={openSettingsPage} />
         </div>
         {/* {logseqSearchResult?.blocks.slice(0, 20).map((block) => ( */}
-       {logseqSearchResult && logseqSearchResult.blocks && 
-          <LogseqBlock
-            // key={block.uuid}
-            graph={logseqSearchResult.graph}
-            blocks={logseqSearchResult.blocks.slice(0, 20)}
-            isPopUp={true}
-          />
-       }
+        {logseqSearchResult && groupedBlocks && Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
+          // return blockGroup.map((block) => {
+            let blockCount = 0;
+          const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
+            blockCount += allBlocksinPage.length;
+            return (
+              <LogseqBlock key={key} blocks={allBlocksinPage} graph={logseqSearchResult.graph} />
+            )
+          });
+          // });
+
+          return (
+            <>
+              {logseqPageBlocks.length > 0 ?
+                <details open>
+                  <summary>
+                    {`${key} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
+                    {key !== "default" && 
+                      <span className={styles.popupGroupToolTip} 
+                        title={`this block is a result of ${key} - ${ key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
+                      >
+                        i
+                      </span>
+                    }
+                  </summary>
+                  {logseqPageBlocks}
+                </details>
+                : <></>
+              }
+            </>
+          )
+        })}
         {/* ))} */}
       </div>
     </div>

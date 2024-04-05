@@ -123,11 +123,11 @@ export const LogseqBlock = ({ graph, blocks }: LogseqBlockProps) => {
                   block.blockSearchType == BlockSearchType.WEBPAGE_TITLE ? styles.webpageTitleSearch : ""
                 ].join(" ")
               }>
-                  {block.blockSearchType == BlockSearchType.FUZZY_URL && 
+                  {/* {block.blockSearchType == BlockSearchType.FUZZY_URL && 
                   <span className={styles.fuzzyResultTooltip} title='this block is a result of fuzzy search - searching the website domain'>
                     Fuzzy Search
                   </span>
-                  }
+                  } */}
                   <div className={styles.blockContentRoot} >
                     {markerRender(block.marker)}{' '}
                     <div className={styles.blockContent} dangerouslySetInnerHTML={{ __html: block.html }} />

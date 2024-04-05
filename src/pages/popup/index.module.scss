@@ -9,6 +9,7 @@ body {
 
   .content {
     @apply flex flex-col gap-4 prose-sm whitespace-pre-wrap text-sm;
+
     * {
       @apply break-all text-sm;
     }
@@ -50,6 +51,7 @@ body {
 
 .content {
   @apply flex flex-col gap-2 prose-sm prose-p:my-0 prose-pre:my-1 whitespace-pre-wrap text-sm;
+
   * {
     @apply break-all text-sm;
   }
@@ -77,4 +79,15 @@ body {
   a {
     @apply text-sm text-center object-center;
   }
+}
+
+.popupGroupToolTip {
+  background: firebrick;
+  margin-left: 5px;
+  padding: 0px 8px;
+  border-radius: 100vh;
+  /* text-wrap: nowrap; */
+  // right: 100%;
+  // top: 50%;
+  /* transform: translateY(-50%); */
 }
