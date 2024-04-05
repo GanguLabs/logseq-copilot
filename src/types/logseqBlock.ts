@@ -13,8 +13,13 @@ export type LogseqBlockType = {
   format: string;
   marker: string;
   priority: string;
-  fuzzyResult?: boolean;
+  blockSearchType?: BlockSearchType;
 };
+
+export enum BlockSearchType {
+  FUZZY_URL = 'fuzzy_url',
+  WEBPAGE_TITLE = 'webpage_title',
+}
 
 export type LogseqPageContentType = {
   uuid: string;

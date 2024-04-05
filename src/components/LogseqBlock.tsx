@@ -1,4 +1,4 @@
-import { LogseqBlockType } from '@/types/logseqBlock';
+import { BlockSearchType, LogseqBlockType } from '@/types/logseqBlock';
 import LogseqPageLink from './LogseqPage';
 import Browser from 'webextension-polyfill';
 import styles from './logseq.module.scss';
@@ -117,8 +117,13 @@ export const LogseqBlock = ({ graph, blocks }: LogseqBlockProps) => {
           <ul className={styles.blockContentList}>
             {blocks.map((block: LogseqBlockType) => {
               return(
-                <li className={styles.blockContentListItem + " " + (block.fuzzyResult ? styles.fuzzyResult : "")}>
-                  {block.fuzzyResult && 
+                <li className={ [
+                  styles.blockContentListItem, 
+                  block.blockSearchType == BlockSearchType.FUZZY_URL ? styles.fuzzyUrlSearch : "",
+                  block.blockSearchType == BlockSearchType.WEBPAGE_TITLE ? styles.webpageTitleSearch : ""
+                ].join(" ")
+              }>
+                  {block.blockSearchType == BlockSearchType.FUZZY_URL && 
                   <span className={styles.fuzzyResultTooltip} title='this block is a result of fuzzy search - searching the website domain'>
                     Fuzzy Search
                   </span>

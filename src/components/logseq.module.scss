@@ -93,8 +93,11 @@
       display: initial;
     }
   }
+  &.webpageTitleSearch{
+    background: hsla(185, 68%, 42%, 0.15);
+  }
 
-  &.fuzzyResult{
+  &.fuzzyUrlSearch{
     background: hsl(0deg 68% 42% / 30%);
   
     &:hover{

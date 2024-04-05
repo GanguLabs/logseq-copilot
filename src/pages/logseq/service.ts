@@ -1,4 +1,4 @@
-import { LogseqBlockType } from '../../types/logseqBlock';
+import { BlockSearchType, LogseqBlockType } from '../../types/logseqBlock';
 import LogseqClient from './client';
 import { isBlockIgnore, renderBlock } from './tool';
 
@@ -61,10 +61,10 @@ export default class LogseqService {
       blocks.push(block);
     };
 
-    const find = async (url: string, fuzzy: boolean = false) => {
+    const find = async (url: string, blockSearchType?: BlockSearchType) => {
       const results = await this.logseqClient.find(url);
       results?.forEach((b: LogseqBlockType)=>{
-        b.fuzzyResult = fuzzy;
+        b.blockSearchType = blockSearchType;
         if(isBlockIgnore(b)) {
           // do nothing
         }else{
@@ -92,13 +92,13 @@ export default class LogseqService {
       splitTitle.pop();
       const titleWithoutCompanyName = splitTitle.join("").trim();
       // console.log({titleWithoutCompanyName})
-      await find(titleWithoutCompanyName);
+      await find(titleWithoutCompanyName, BlockSearchType.WEBPAGE_TITLE);
     }
 
     const count = blocks.length;
 
     if (url.host && opt.fuzzy && this.isUrlValidForFuzzy(url)) {
-      await find(url.host, opt.fuzzy);
+      await find(url.host, BlockSearchType.FUZZY_URL);
     }
 
     return {
