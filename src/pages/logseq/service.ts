@@ -1,6 +1,6 @@
 import { LogseqBlockType } from '../../types/logseqBlock';
 import LogseqClient from './client';
-import { renderBlock } from './tool';
+import { isBlockIgnore, renderBlock } from './tool';
 
 export default class LogseqService {
   private logseqClient: LogseqClient = new LogseqClient();
@@ -65,7 +65,11 @@ export default class LogseqService {
       const results = await this.logseqClient.find(url);
       results?.forEach((b: LogseqBlockType)=>{
         b.fuzzyResult = fuzzy;
-        blockAdd(b);
+        if(isBlockIgnore(b)) {
+          // do nothing
+        }else{
+          blockAdd(b);
+        }
       });
     };
 

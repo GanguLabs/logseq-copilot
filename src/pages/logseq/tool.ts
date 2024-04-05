@@ -29,6 +29,15 @@ export const cleanBlock = (block: LogseqBlockType): string => {
     .trim();
 };
 
+export function isBlockIgnore(block: LogseqBlockType){
+  // ignore query blocks
+  if (block.content.includes('#+BEGIN_QUERY') || block.content.includes('#+END_QUERY')) {
+    return true;
+  }
+
+  return false;
+}
+
 const highlightTokens = (query: string) => {
   const re = new RegExp(`^(?!<mark>)${query}(?!<\/mark>)`, 'g');
   return (token) => {

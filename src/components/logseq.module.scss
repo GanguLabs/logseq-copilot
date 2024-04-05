@@ -135,6 +135,9 @@
   display: flex;
   justify-content: space-between;
   gap: 14px;
+  position: relative;
+  left: -8px;
+  margin-left: 6px;
 }
 
 .blockContent {
