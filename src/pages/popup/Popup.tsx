@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import { BlockSearchType, LogseqBlockType, LogseqSearchResult } from '@/types/logseqBlock';
 import { IconSettings } from '@tabler/icons-react';
+import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box, } from '@chakra-ui/react'
 
 import { LogseqBlock } from '@components/LogseqBlock';
 
@@ -69,7 +70,6 @@ export default function Popup() {
       groups[item.blockSearchType] = {};
     };
     const searchTypeGroup = item.blockSearchType ? groups[item.blockSearchType] : groups.default;
-    console.log({ searchTypeGroup, item, groups })
     const group = (searchTypeGroup[item.page.name] || []);
     group.push(item);
     searchTypeGroup[item.page.name] = group;
@@ -84,6 +84,7 @@ export default function Popup() {
           <IconSettings size={16} onClick={openSettingsPage} />
         </div>
         {/* {logseqSearchResult?.blocks.slice(0, 20).map((block) => ( */}
+        <Accordion defaultIndex={[0]} allowToggle>
         {logseqSearchResult && groupedBlocks && Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
           // return blockGroup.map((block) => {
             let blockCount = 0;
@@ -98,24 +99,47 @@ export default function Popup() {
           return (
             <>
               {logseqPageBlocks.length > 0 ?
-                <details open>
-                  <summary>
-                    {`${key} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
-                    {key !== "default" && 
-                      <span className={styles.popupGroupToolTip} 
-                        title={`this block is a result of ${key} - ${ key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
-                      >
-                        i
-                      </span>
-                    }
-                  </summary>
-                  {logseqPageBlocks}
-                </details>
+                  <AccordionItem>
+                  <p>
+                    <AccordionButton _expanded={{ bg: 'darkslateblue', color: 'white' }}
+                       title={`this block is a result of ${key} - ${ key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
+                    >
+                      <Box as="span" flex='1' textAlign='left'>
+                        {`${key} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
+                        {/* {key !== "default" && 
+                          <span className={styles.popupGroupToolTip} 
+                            title={`this block is a result of ${key} - ${ key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
+                          >
+                            i
+                          </span>
+                        } */}
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </p>
+                  <AccordionPanel pb={4}>
+                    {logseqPageBlocks}
+                  </AccordionPanel>
+                </AccordionItem>
+                // <details open>
+                //   <summary>
+                //     {`${key} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
+                //     {key !== "default" && 
+                //       <span className={styles.popupGroupToolTip} 
+                //         title={`this block is a result of ${key} - ${ key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
+                //       >
+                //         i
+                //       </span>
+                //     }
+                //   </summary>
+                //   {logseqPageBlocks}
+                // </details>
                 : <></>
               }
             </>
           )
         })}
+        </Accordion>
         {/* ))} */}
       </div>
     </div>
