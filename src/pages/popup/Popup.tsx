@@ -106,15 +106,17 @@ export default function Popup() {
                     <AccordionButton _expanded={{ bg: 'darkslateblue', color: 'white' }}
                       title={`this block is a result of ${key} - ${key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
                     >
-                      <Box as="span" flex='1' textAlign='left'>
-                        {`${searchQuery} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
-                        {key !== "default" &&
+                      <Box style={{display: "flex", maxWidth: "95%"}} as="span" flex='1' textAlign='left'>
+                        <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          {`${searchQuery} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
+                        </span>
+                        {/* {key !== "default" && */}
                           <span className={styles.popupGroupToolTip}
                             title={searchQuery ? `Search Query(${key}): ${searchQuery}` : "" }
                           >
                             🔍
                           </span>
-                        }
+                        {/* } */}
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>
