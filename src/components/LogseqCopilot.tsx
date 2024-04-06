@@ -3,7 +3,9 @@ import styles from './logseq.module.scss';
 import Browser from 'webextension-polyfill';
 import { LogseqBlock } from './LogseqBlock';
 import LogseqPageLink from './LogseqPage';
+import logo from '../assets/img/logo.png';
 import { LogseqPageIdenity, LogseqBlockType } from '@/types/logseqBlock';
+import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box, flexbox, } from '@chakra-ui/react'
 
 
 const LogseqCopilot = ({ graph, pages, blocks }:{graph: string, pages: LogseqPageIdenity[] , blocks: LogseqBlockType[]}) => {
@@ -94,12 +96,34 @@ const LogseqCopilot = ({ graph, pages, blocks }:{graph: string, pages: LogseqPag
 
   return (
     <>
-      <div className={styles.copilotCardHeader}>
-        <span>Graph: {graph}</span>
-        <IconSettings onClick={goOptionPage} size={16} />
-      </div>
-      {pagesRender()}
-      {blocksRender()}
+      <Accordion defaultIndex={[0]} allowToggle>
+        <AccordionItem>
+          <p>
+            <AccordionButton _expanded={{ bg: '#002a35', color: 'white' }}
+            // title={`this block is a result of ${key} - ${key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
+            >
+              <Box className={styles.copilotCardHeader} as="span" flex='1' textAlign='left'>
+                <span style={{display: "flex", alignItems: "center", gap: "5px"}}>
+                  <img
+                    height={16}
+                    className={``}
+                    src={logo}
+                    // onClick={capture}
+                    alt={'Logseq Logo'}
+                  />
+                  Graph: {graph}
+                </span>
+                <IconSettings onClick={goOptionPage} size={16} />
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </p>
+          <AccordionPanel pb={4}>
+            {pagesRender()}
+            {blocksRender()}
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
     </>
   );
 };

@@ -7,7 +7,7 @@
 }
 
 .copilotCardHeader {
-  @apply flex flex-row justify-between items-center text-sm pb-2;
+  @apply flex flex-row justify-between items-center text-sm py-1;
 
   a {
     @apply text-sm text-center object-center;
