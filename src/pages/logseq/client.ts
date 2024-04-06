@@ -105,8 +105,6 @@ export default class LogseqClient {
   };
 
   public search = async (query: string): Promise<LogseqSearchResponse> => {
-    // note that this is case sensitive, so you don't get result if the query is not exactly the same
-    // you can test this by searching for some text in different case and check the popup
     const resp = await this.baseJson('logseq.App.search', [query]);
     if (resp.error) {
       throw LogseqVersionIsLower;
@@ -164,6 +162,9 @@ export default class LogseqClient {
   };
 
   public find = async (query: string) => {
+    // note that this is case sensitive, so you don't get result if the query is not exactly the same
+    // you can test this by searching for some text in different case and check the popup
+    // ref: https://discuss.logseq.com/t/logseq-db-q-case-insensitive-search-using-logseq-api/26259
     const data = await this.baseJson('logseq.DB.q', [
       `"${query.replaceAll('"', '"')}"`,
     ]);

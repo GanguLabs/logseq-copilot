@@ -93,6 +93,7 @@ export default class LogseqService {
       splitTitle.pop();
       const titleWithoutCompanyName = splitTitle.join("").trim();
       // console.log({titleWithoutCompanyName})
+      // TODO: switch to using search function instead of find for case insensitive search
       await find(titleWithoutCompanyName, BlockSearchType.WEBPAGE_TITLE);
     }
 
