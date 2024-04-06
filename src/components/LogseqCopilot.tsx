@@ -8,20 +8,20 @@ import { LogseqPageIdenity, LogseqBlockType } from '@/types/logseqBlock';
 import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box, flexbox, } from '@chakra-ui/react'
 
 
-const LogseqCopilot = ({ graph, pages, blocks, searchQuery }:{graph: string, pages: LogseqPageIdenity[] , blocks: LogseqBlockType[], searchQuery: string}) => {
+const LogseqCopilot = ({ graph, pages, blocks, searchQuery }: { graph: string, pages: LogseqPageIdenity[], blocks: LogseqBlockType[], searchQuery: string }) => {
   const goOptionPage = () => {
     Browser.runtime.sendMessage({ type: 'open-options' });
   };
 
-  const groupedBlocks = blocks.reduce((groups: Record<string, Record<string,LogseqBlockType[]>>, item: LogseqBlockType) => {
-    const searchTypeGroup = item.blockSearchType ? groups[item.blockSearchType] : groups.default ;
+  const groupedBlocks = blocks.reduce((groups: Record<string, Record<string, LogseqBlockType[]>>, item: LogseqBlockType) => {
+    const searchTypeGroup = item.blockSearchType ? groups[item.blockSearchType] : groups.default;
     const group = (searchTypeGroup[item.page.name] || []);
     group.push(item);
     searchTypeGroup[item.page.name] = group;
     return groups;
-  }, {default: {}});
+  }, { default: {} });
 
-  console.log({groupedBlocks, blocks})
+  console.log({ groupedBlocks, blocks })
 
   const count = () => {
     return pages.length + blocks.length;
@@ -35,18 +35,20 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }:{graph: string, pag
       <div className={styles.blocks}>
         {Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
           // return blockGroup.map((block) => {
-            const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
+          const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
             return (
-            <LogseqBlock key={key} blocks={allBlocksinPage} graph={graph} />
-            )});
+              <LogseqBlock key={key} blocks={allBlocksinPage} graph={graph} />
+            )
+          });
           // });
 
-          return(
+          return (
             <>
-              {(Object.keys(groupedBlocks).length == 1 && Object.keys(groupedBlocks)[0] == "default") ? <></> : <p>{key}</p>} 
+              {(Object.keys(groupedBlocks).length == 1 && Object.keys(groupedBlocks)[0] == "default") ? <></> : <p>{key}</p>}
               {logseqPageBlocks}
             </>
-          )})}
+          )
+        })}
       </div>
     );
 
@@ -97,33 +99,31 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }:{graph: string, pag
   return (
     <>
       <Accordion defaultIndex={[0]} allowToggle>
-        <AccordionItem>
-          <p>
-            <AccordionButton _expanded={{ bg: '#002a35', color: 'white' }}
-            // title={`this block is a result of ${key} - ${key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
-            >
-              <Box className={styles.copilotCardHeader} as="span" flex='1' textAlign='left'>
-                <span style={{display: "flex", alignItems: "center", gap: "5px"}}>
-                  <img
-                    height={16}
-                    className={``}
-                    src={logo}
-                    // onClick={capture}
-                    alt={'Logseq Logo'}
-                  />
-                  Graph: {graph}
-                  <span className={styles.popupGroupToolTip}
-                    title={`Search Query - ${searchQuery} `}
-                  >
-                    i
-                  </span>
+        <AccordionItem className={styles.accordianItem}>
+          <AccordionButton _expanded={{ bg: '#002a35', color: 'white' }}
+          // title={`this block is a result of ${key} - ${key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
+          >
+            <Box className={styles.copilotCardHeader} as="span" flex='1' textAlign='left'>
+              <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <img
+                  height={16}
+                  className={``}
+                  src={logo}
+                  // onClick={capture}
+                  alt={'Logseq Logo'}
+                />
+                Graph: {graph}
+                <span className={styles.popupGroupToolTip}
+                  title={`Search Query - ${searchQuery} `}
+                >
+                  i
                 </span>
-                <IconSettings onClick={goOptionPage} size={16} />
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </p>
-          <AccordionPanel pb={4}>
+              </span>
+              <IconSettings onClick={goOptionPage} size={16} />
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel pb={4} className={styles.accordianPanel}>
             {pagesRender()}
             {blocksRender()}
           </AccordionPanel>

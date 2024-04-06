@@ -91,3 +91,16 @@ body {
   // top: 50%;
   /* transform: translateY(-50%); */
 }
+
+.accordianItem{
+  @apply rounded-b-lg;
+
+  background: hsl(180deg 100% 95% / 13%);
+  background: hsl(192deg 100% 10% / 30%);
+  border: 1px solid hsl(192deg 100% 50% / 15%);
+  // border-radius: 8px;
+}
+
+.accordianPanel{
+  @apply px-1;
+}

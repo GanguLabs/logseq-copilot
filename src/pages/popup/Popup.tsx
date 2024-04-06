@@ -77,7 +77,7 @@ export default function Popup() {
   }, { default: {} });
 
   return (
-    <div className="copilot">
+    <div className="copilot popup">
       <div className={styles.content}>
         <div className={styles.copilotCardHeader}>
           <span>Graph: {logseqSearchResult?.graph}</span>
@@ -101,7 +101,7 @@ export default function Popup() {
           return (
             <>
               {logseqPageBlocks.length > 0 ?
-                <AccordionItem>
+                <AccordionItem className={`rounded-lg ${styles.accordianItem}`}>
                   <p>
                     <AccordionButton _expanded={{ bg: 'darkslateblue', color: 'white' }}
                       title={`this block is a result of ${key} - ${key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
@@ -119,7 +119,7 @@ export default function Popup() {
                       <AccordionIcon />
                     </AccordionButton>
                   </p>
-                  <AccordionPanel pb={4}>
+                  <AccordionPanel pb={4} className={styles.accordianPanel}>
                     {logseqPageBlocks}
                   </AccordionPanel>
                 </AccordionItem>
