@@ -19,7 +19,8 @@
 }
 
 .toBlock {
-  @apply no-underline hover:underline min-w-max;
+  @apply no-underline hover:underline min-w-max pl-1;
+  border-left: 1px solid hsl(180deg 25% 25% / 50%);;
 }
 
 .logseqPageLink {
@@ -55,7 +56,7 @@
   background: firebrick;
   opacity: 0.5;
   margin-left: 5px;
-  padding: 0px 8px;
+  padding: 0px 2px;
   border-radius: 100vh;
   /* text-wrap: nowrap; */
   // right: 100%;
@@ -114,54 +115,55 @@
 .blockContentListItem{
   // @apply list-inside;
   padding: 1px 3px;
+  padding-left: 3px !important;
   border-radius: 3px;
   position: relative;
 
   &:hover{
     background-color: hsl(0deg 0% 40% / 30%);
 
-    .fuzzyResultTooltip{
-      display: initial;
-    }
+    // .fuzzyResultTooltip{
+    //   display: initial;
+    // }
   }
-  &.webpageTitleSearch{
-    background: hsla(185, 68%, 42%, 0.15);
-  }
+  // &.webpageTitleSearch{
+  //   background: hsla(185, 68%, 42%, 0.15);
+  // }
 
-  &.fuzzyUrlSearch{
-    background: hsl(0deg 68% 42% / 30%);
+  // &.fuzzyUrlSearch{
+  //   background: hsl(0deg 68% 42% / 30%);
   
-    &:hover{
-      background-color: hsl(0deg 68% 42% / 10%);
+  //   &:hover{
+  //     background-color: hsl(0deg 68% 42% / 10%);
   
-      // &::before{
-      //   content: "fuzzy";
-      //   position: absolute;
-      //   background: firebrick;
-      //   padding: 1px 3px;
-      //   border-radius: 3px;
-      //   text-wrap: nowrap;
-      //   right: 100%;
-      //   top: 50%;
-      //   transform: translateY(-50%);
-      // }
+  //     // &::before{
+  //     //   content: "fuzzy";
+  //     //   position: absolute;
+  //     //   background: firebrick;
+  //     //   padding: 1px 3px;
+  //     //   border-radius: 3px;
+  //     //   text-wrap: nowrap;
+  //     //   right: 100%;
+  //     //   top: 50%;
+  //     //   transform: translateY(-50%);
+  //     // }
   
-    }
-  }
+  //   }
+  // }
 }
 
-.fuzzyResultTooltip{
-  display: none;
-  // pointer-events: none;
-  position: absolute;
-  background: firebrick;
-  padding: 1px 3px;
-  border-radius: 3px;
-  text-wrap: nowrap;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%) translateX(-60%);
-}
+// .fuzzyResultTooltip{
+//   display: none;
+//   // pointer-events: none;
+//   position: absolute;
+//   background: firebrick;
+//   padding: 1px 3px;
+//   border-radius: 3px;
+//   text-wrap: nowrap;
+//   left: 0;
+//   top: 50%;
+//   transform: translateY(-50%) translateX(-60%);
+// }
 
 
 

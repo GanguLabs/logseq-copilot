@@ -122,9 +122,9 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }: { graph: string, p
                 />
                 Graph: {graph}
                 <span className={styles.popupGroupToolTip}
-                  title={`Search Query - ${searchQuery} `}
+                  title={`Search Query: ${searchQuery} `}
                 >
-                  i
+                  🔍
                 </span>
               </span>
               <IconSettings onClick={goOptionPage} size={16} />

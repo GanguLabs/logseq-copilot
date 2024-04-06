@@ -110,9 +110,9 @@ export default function Popup() {
                         {`${searchQuery} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
                         {key !== "default" &&
                           <span className={styles.popupGroupToolTip}
-                            title={`${searchQuery ? key + " - " + searchQuery : ""}`}
+                            title={searchQuery ? `Search Query(${key}): ${searchQuery}` : "" }
                           >
-                            i
+                            🔍
                           </span>
                         }
                       </Box>
@@ -130,7 +130,7 @@ export default function Popup() {
                 //       <span className={styles.popupGroupToolTip} 
                 //         title={`this block is a result of ${key} - ${ key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
                 //       >
-                //         i
+                //         🔍
                 //       </span>
                 //     }
                 //   </summary>
