@@ -32,24 +32,27 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }: { graph: string, p
       return <></>;
     }
     return (
-      <div className={styles.blocks}>
-        {Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
-          // return blockGroup.map((block) => {
-          const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
-            return (
-              <LogseqBlock key={key} blocks={allBlocksinPage} graph={graph} />
-            )
-          });
-          // });
+      <>
+        {/* <span>Blocks:</span> */}
+        <div className={styles.blocks}>
+          {Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
+            // return blockGroup.map((block) => {
+            const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
+              return (
+                <LogseqBlock key={key} blocks={allBlocksinPage} graph={graph} />
+              )
+            });
+            // });
 
-          return (
-            <>
-              {(Object.keys(groupedBlocks).length == 1 && Object.keys(groupedBlocks)[0] == "default") ? <></> : <p>{key}</p>}
-              {logseqPageBlocks}
-            </>
-          )
-        })}
-      </div>
+            return (
+              <>
+                {(Object.keys(groupedBlocks).length == 1 && Object.keys(groupedBlocks)[0] == "default") ? <></> : <p>{key}</p>}
+                {logseqPageBlocks}
+              </>
+            )
+          })}
+        </div>
+      </>
     );
 
     // {Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
@@ -70,20 +73,25 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }: { graph: string, p
     if (pages.length === 0) {
       return <></>;
     }
-    return <div className={styles.pages}>
-      {pages.slice(0, 9).map((page) => {
-        if (!page) return <></>;
-        return (
-          <div className={styles.page}>
-            <LogseqPageLink
-              key={page.name}
-              graph={graph}
-              page={page}
-            ></LogseqPageLink>
-          </div>
-        );
-      })}
-    </div>
+    return (
+      <>
+        {/* <span>Pages:</span> */}
+        <div className={styles.pages}>
+          {pages.slice(0, 9).map((page) => {
+            if (!page) return <></>;
+            return (
+                <div className={styles.page}>
+                  <LogseqPageLink
+                    key={page.name}
+                    graph={graph}
+                    page={page}
+                  ></LogseqPageLink>
+                </div>
+            );
+          })}
+        </div>
+      </>
+    )
 
   };
 

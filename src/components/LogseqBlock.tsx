@@ -10,7 +10,7 @@ type LogseqBlockProps = {
   isPopUp?: boolean;
 };
 
-export const LogseqBlock = ({ graph, blocks }: LogseqBlockProps) => {
+export const LogseqBlock = ({ graph, blocks, isPopUp }: LogseqBlockProps) => {
 
   if(blocks.length === 0) {
     return <></>;
@@ -113,7 +113,7 @@ export const LogseqBlock = ({ graph, blocks }: LogseqBlockProps) => {
         <div className={styles.blockHeader}>
           <LogseqPageLink graph={graph} page={block.page}></LogseqPageLink>
         </div>
-        <div className={styles.blockBody}>
+        <div className={styles.blockBody} style={{marginLeft: `${isPopUp ? "-5px": ""}`}}>
           <ul className={styles.blockContentList}>
             {blocks.map((block: LogseqBlockType) => {
               return(

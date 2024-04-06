@@ -83,6 +83,7 @@ body {
 
 .popupGroupToolTip {
   background: firebrick;
+  opacity: 0.5;
   margin-left: 5px;
   padding: 0px 6px;
   border-radius: 100vh;
@@ -90,6 +91,10 @@ body {
   // right: 100%;
   // top: 50%;
   /* transform: translateY(-50%); */
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .accordianItem{
