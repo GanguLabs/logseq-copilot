@@ -121,6 +121,11 @@ export default class LogseqService {
       return false;
     }
 
+    if(url.host.includes("google.com") && url.pathname == '/search') {
+      // ignore youtube video's for fuzzy search
+      return false;
+    }
+
     if(url.host.includes("marketplace.visualstudio.com") && url.pathname == '/items') {
       // ignore marketplace.visualstudio.com for fuzzy search
       return false;

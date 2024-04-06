@@ -12,7 +12,7 @@ const logseqService = new LogseqService();
 
 browser.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((msg) => {
-    if (msg.type === 'query') {
+    if (msg.type === "searchEngineQuery") {
       const promise = new Promise(async () => {
         const searchRes = await logseqService.search(msg.query);
         port.postMessage(searchRes);

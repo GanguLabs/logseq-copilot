@@ -18,7 +18,7 @@ const connect = Browser.runtime.connect();
 const mount = async (container: Element, query: string) => {
   const root = createRoot(container);
 
-  connect.postMessage({ type: 'query', query: query });
+  connect.postMessage({ type: "searchEngineQuery", query: query });
 
   root.render(<LogseqCopliot connect={connect} searchQuery={query} />);
 };
