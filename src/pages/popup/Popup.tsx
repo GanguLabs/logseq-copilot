@@ -87,7 +87,9 @@ export default function Popup() {
         <Accordion defaultIndex={[0]} allowToggle>
         {logseqSearchResult && groupedBlocks && Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
           // return blockGroup.map((block) => {
-            let blockCount = 0;
+          let blockCount = 0;
+          console.log({searchTypeGroupBlocks})
+          const searchQuery = Object.keys(searchTypeGroupBlocks).length > 0 ? searchTypeGroupBlocks[Object.keys(searchTypeGroupBlocks)[0]][0].searchQuery : "";
           const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
             blockCount += allBlocksinPage.length;
             return (
@@ -99,20 +101,20 @@ export default function Popup() {
           return (
             <>
               {logseqPageBlocks.length > 0 ?
-                  <AccordionItem>
+                <AccordionItem>
                   <p>
                     <AccordionButton _expanded={{ bg: 'darkslateblue', color: 'white' }}
-                       title={`this block is a result of ${key} - ${ key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
+                      title={`this block is a result of ${key} - ${key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
                     >
                       <Box as="span" flex='1' textAlign='left'>
-                        {`${key} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
-                        {/* {key !== "default" && 
-                          <span className={styles.popupGroupToolTip} 
-                            title={`this block is a result of ${key} - ${ key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
+                        {`${searchQuery} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
+                        {key !== "default" &&
+                          <span className={styles.popupGroupToolTip}
+                            title={`${searchQuery ? key + " - " + searchQuery : ""}`}
                           >
                             i
                           </span>
-                        } */}
+                        }
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>

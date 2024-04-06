@@ -97,13 +97,13 @@ const quickCapture = async (data: string) => {
     await logseqClient.appendBlock(journalPage, block);
   }
 
-  debounceBadgeSearch(activeTab.url, activeTab.id!);
+  debounceBadgeSearch(activeTab.url, activeTab.title ?? "", activeTab.id!);
 };
 
 browser.tabs.onActivated.addListener((activeInfo) => {
   const promise = new Promise(async () => {
     const tab = await browser.tabs.get(activeInfo.tabId);
-    await debounceBadgeSearch(tab.url, activeInfo.tabId);
+    await debounceBadgeSearch(tab.url, tab.title ?? "", activeInfo.tabId);
   });
   promise.catch((err) => console.error(err));
 });
@@ -136,6 +136,8 @@ try {
     contexts: ['selection'],
   });
 } catch (error) {
+  // the context menu's might get create multiple times - resulting in error `Cannot create item with duplicate id clip-with-selection`
+  // its a known bug: https://stackoverflow.com/a/38204762/6908282
   console.log(error);
 }
 
@@ -147,6 +149,8 @@ try {
     contexts: ['page'],
   });
 } catch (error) {
+  // the context menu's might get create multiple times - resulting in error `Cannot create item with duplicate id clip-page`
+  // its a known bug: https://stackoverflow.com/a/38204762/6908282
   console.log(error);
 }
 

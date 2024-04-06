@@ -8,7 +8,7 @@ import { LogseqPageIdenity, LogseqBlockType } from '@/types/logseqBlock';
 import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box, flexbox, } from '@chakra-ui/react'
 
 
-const LogseqCopilot = ({ graph, pages, blocks }:{graph: string, pages: LogseqPageIdenity[] , blocks: LogseqBlockType[]}) => {
+const LogseqCopilot = ({ graph, pages, blocks, searchQuery }:{graph: string, pages: LogseqPageIdenity[] , blocks: LogseqBlockType[], searchQuery: string}) => {
   const goOptionPage = () => {
     Browser.runtime.sendMessage({ type: 'open-options' });
   };
@@ -112,6 +112,11 @@ const LogseqCopilot = ({ graph, pages, blocks }:{graph: string, pages: LogseqPag
                     alt={'Logseq Logo'}
                   />
                   Graph: {graph}
+                  <span className={styles.popupGroupToolTip}
+                    title={`Search Query - ${searchQuery} `}
+                  >
+                    i
+                  </span>
                 </span>
                 <IconSettings onClick={goOptionPage} size={16} />
               </Box>

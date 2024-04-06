@@ -14,6 +14,7 @@ export type LogseqBlockType = {
   marker: string;
   priority: string;
   blockSearchType?: BlockSearchType;
+  searchQuery?: string;
 };
 
 export enum BlockSearchType {

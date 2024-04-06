@@ -20,7 +20,7 @@ const mount = async (container: Element, query: string) => {
 
   connect.postMessage({ type: 'query', query: query });
 
-  root.render(<LogseqCopliot connect={connect} />);
+  root.render(<LogseqCopliot connect={connect} searchQuery={query} />);
 };
 
 async function run(

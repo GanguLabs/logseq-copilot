@@ -6,9 +6,10 @@ import styles from './index.module.scss';
 import LogseqCopilot from '@components/LogseqCopilot';
 type LogseqCopliotProps = {
   connect: Browser.Runtime.Port;
+  searchQuery: string;
 };
 
-export const LogseqCopliot = ({ connect }: LogseqCopliotProps) => {
+export const LogseqCopliot = ({ connect, searchQuery }: LogseqCopliotProps) => {
   const [msg, setMsg] = React.useState('Loading...');
   const [logseqSearchResult, setLogseqSearchResult] =
     React.useState<LogseqSearchResult>();
@@ -28,6 +29,7 @@ export const LogseqCopliot = ({ connect }: LogseqCopliotProps) => {
     if (msg === 'success') {
       return (
         <LogseqCopilot
+          searchQuery={searchQuery}
           graph={logseqSearchResult?.graph || ''}
           blocks={logseqSearchResult?.blocks || []}
           pages={logseqSearchResult?.pages || []}

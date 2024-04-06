@@ -65,6 +65,7 @@ export default class LogseqService {
       const results = await this.logseqClient.find(url);
       results?.forEach((b: LogseqBlockType)=>{
         b.blockSearchType = blockSearchType;
+        b.searchQuery = url;
         if(isBlockIgnore(b)) {
           // do nothing
         }else{
