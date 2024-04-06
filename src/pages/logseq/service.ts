@@ -126,6 +126,16 @@ export default class LogseqService {
       return false;
     }
 
+    if(url.host == "discuss.logseq.com") {
+      // ignore discuss.logseq.com for fuzzy search
+      return false;
+    }
+
+    if(url.host .includes("wikipedia.org")) {
+      // ignore wikipedia.org for fuzzy search
+      return false;
+    }
+
     if(url.host.includes("marketplace.visualstudio.com") && url.pathname == '/items') {
       // ignore marketplace.visualstudio.com for fuzzy search
       return false;
