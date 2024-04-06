@@ -25,6 +25,10 @@ type LogseqSearchResponse = {
     'block/snippet': string;
   }[];
   pages: string[];
+  // blocks: LogseqBlockType[];
+  // pages: LogseqPageIdenity[];
+  // graph: string;
+  // count: number;
 };
 
 export type LogseqPageResponse = {

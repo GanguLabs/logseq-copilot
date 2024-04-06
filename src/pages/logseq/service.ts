@@ -74,6 +74,30 @@ export default class LogseqService {
       });
     };
 
+    const caseInsensitiveSearch = async (queryString: string, blockSearchType?: BlockSearchType) => {
+      const result = await this.logseqClient.search(queryString);
+      // const result = await this.search(queryString);
+      const searchBlocks = await Promise.all(
+        // result.response.blocks.map(async (block) => {
+        result.blocks.map(async (block) => {
+          return await this.getBlock(block['block/uuid'], graph.name);
+        }),
+      );
+
+      searchBlocks.forEach(b => {
+
+        b.blockSearchType = blockSearchType;
+        b.searchQuery = queryString;
+
+        if (isBlockIgnore(b)) {
+          // do nothing
+        } else {
+          blockAdd(b);
+        }
+      })
+
+    };
+
     this.correctUrlPerWebsite(url);
 
     if (url.hash) {
@@ -93,8 +117,7 @@ export default class LogseqService {
       splitTitle.pop();
       const titleWithoutCompanyName = splitTitle.join("").trim();
       // console.log({titleWithoutCompanyName})
-      // TODO: switch to using search function instead of find for case insensitive search
-      await find(titleWithoutCompanyName, BlockSearchType.WEBPAGE_TITLE);
+      await caseInsensitiveSearch(titleWithoutCompanyName, BlockSearchType.WEBPAGE_TITLE);
     }
 
     const count = blocks.length;
