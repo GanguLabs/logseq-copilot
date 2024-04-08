@@ -42,9 +42,10 @@ const highlightTokens = (query: string) => {
   const re = new RegExp(`^(?!<mark>)${query}(?!<\/mark>)`, 'g');
   return (token) => {
     if (
-      token.type !== 'code' &&
-      token.type !== 'codespan' &&
-      token.type !== 'logseqLink' &&
+      token.type !== logseqTokenType.code &&
+      token.type !== logseqTokenType.codespan &&
+      token.type !== logseqTokenType.logseqPageRef &&
+      token.type !== logseqTokenType.logseqBlockRef &&
       token.text
     ) {
       token.text = query
@@ -62,7 +63,7 @@ const logseqLinkExt = (graph: string, query?: string) => {
       const match = src.match(/^#?\[\[(.*?)\]\]/);
       if (match) {
         return {
-          type: 'logseqLink',
+          type: logseqTokenType.logseqPageRef,
           raw: match[0],
           text: match[1],
           href: match[1].trim(),
@@ -99,3 +100,10 @@ export const renderBlock = (
   block.html = html;
   return block;
 };
+
+const enum logseqTokenType {
+  logseqBlockRef = 'logseqBlockRef',
+  logseqPageRef = 'logseqPageRef',
+  code = 'code',
+  codespan = 'codespan',
+}
