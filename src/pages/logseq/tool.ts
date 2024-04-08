@@ -60,25 +60,44 @@ const logseqLinkExt = (graph: string, query?: string) => {
     name: 'logseqLink',
     level: 'inline',
     tokenizer: function (src: string) {
-      const match = src.match(/^#?\[\[(.*?)\]\]/);
-      if (match) {
+      const pageRefRegex = src.match(/^#?\[\[(.*?)\]\]/); // regex: \[\[(.*?)\]\]
+      const blockRefRegex = src.match(/^#?\[(.*?)\]\(\(\((.*?)\)\)\)/); // regex: \[(.*?)\]\(\(\((.*?)\)\)\)
+      if (pageRefRegex) {
         return {
-          type: logseqTokenType.logseqPageRef,
-          raw: match[0],
-          text: match[1],
-          href: match[1].trim(),
+          type: 'logseqLink',
+          logseqDataType: logseqTokenType.logseqPageRef,
+          raw: pageRefRegex[0],
+          text: pageRefRegex[1],
+          href: pageRefRegex[1].trim(),
+          tokens: [],
+        };
+      }
+      if(blockRefRegex) {
+        return {
+          type: 'logseqLink',
+          logseqDataType: logseqTokenType.logseqBlockRef,
+          raw: blockRefRegex[0],
+          text: blockRefRegex[1],
+          href: blockRefRegex[2].trim(),
           tokens: [],
         };
       }
       return false;
     },
     renderer: function (token) {
-      const { text, href } = token;
+      const { text, href, logseqDataType } = token;
 
       const fillText = query
         ? text.replaceAll(query, '<mark>' + query + '</mark>')
         : text;
-      return `<a class="logseq-page-link" href="logseq://graph/${graph}?page=${href}"><span class="tie tie-page"></span>${fillText}</a>`;
+
+      const pageRefToHref = `<a class="logseq-page-link" href="logseq://graph/${graph}?page=${href}"><span class="tie tie-page"></span>${fillText}</a>`;
+      const blockRefToHref = `<a class="logseq-block-link" href="logseq://graph/${graph}?block-id=${href}"><span class="tie tie-block"></span>${fillText}</a>`;
+
+      const hrefToReturn = logseqDataType === logseqTokenType.logseqPageRef ? pageRefToHref : blockRefToHref;
+      
+
+      return hrefToReturn;
     },
   };
 };
