@@ -11,28 +11,39 @@ export default class LogseqService {
 
   public async search(query: string) {
     const graph = await this.getGraph();
-    const result = await this.logseqClient.search(query);
-    result.blocks = await Promise.all(
-      result.blocks.map(async (block) => {
-        return await this.getBlock(block['block/uuid'], graph.name, query);
-      }),
-    );
-    result.pages = await Promise.all(
-      result.pages.map(async (page: string) => {
-        return await this.logseqClient.getPage({
-          name: page,
-        });
-      }),
-    );
-
-    result.graph = graph.name;
-    result.count = result.blocks.length + result.pages.length;
-
-    return {
-      msg: 'success',
-      status: 200,
-      response: result,
-    };
+    if(graph.status == 500){
+      throw new Error("Error getting graph. Please check if Logseq is running.");
+    }
+    try {
+      const result = await this.logseqClient.search(query);
+      result.blocks = await Promise.all(
+        result.blocks.map(async (block) => {
+          return await this.getBlock(block['block/uuid'], graph.name, query);
+        }),
+      );
+      result.pages = await Promise.all(
+        result.pages.map(async (page: string) => {
+          return await this.logseqClient.getPage({
+            name: page,
+          });
+        }),
+      );
+  
+      result.graph = graph.name;
+      result.count = result.blocks.length + result.pages.length;
+  
+      return {
+        msg: 'success',
+        status: 200,
+        response: result,
+      };
+    } catch (error) {
+      return {
+        msg: 'no results',
+        status: 204,
+        response: error,
+      };
+    }
   }
 
   public async getBlock(

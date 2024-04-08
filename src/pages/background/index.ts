@@ -16,6 +16,11 @@ browser.runtime.onConnect.addListener((port) => {
       // this is for searching the text from brower search engine
       const promise = new Promise(async () => {
         const searchRes = await logseqService.search(msg.query);
+        if(searchRes.status == 500){
+          console.error(searchRes.response);
+          throw new Error("Error getting graph. Please check if Logseq is running.");
+          // return;
+        }
         port.postMessage(searchRes);
       });
 

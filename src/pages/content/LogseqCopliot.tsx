@@ -16,6 +16,7 @@ export const LogseqCopliot = ({ connect, searchQuery }: LogseqCopliotProps) => {
 
   connect.onMessage.addListener(
     (resp: LogseqResponseType<LogseqSearchResult>) => {
+      console.log('resp', resp);
       setMsg(resp.msg);
       setLogseqSearchResult(resp.response);
     },
@@ -26,7 +27,14 @@ export const LogseqCopliot = ({ connect, searchQuery }: LogseqCopliotProps) => {
   };
 
   const statusShower = () => {
-    if (msg === 'success') {
+    if(msg === 'error'){
+      return (
+        <div>
+          <p>Something went wrong</p>
+        </div>
+      )
+    } else
+    if (msg === 'success' || msg === "no results") {
       return (
         <LogseqCopilot
           searchQuery={searchQuery}
