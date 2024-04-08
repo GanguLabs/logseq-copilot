@@ -13,6 +13,7 @@ const logseqService = new LogseqService();
 browser.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((msg) => {
     if (msg.type === "searchEngineQuery") {
+      // this is for searching the text from brower search engine
       const promise = new Promise(async () => {
         const searchRes = await logseqService.search(msg.query);
         port.postMessage(searchRes);
