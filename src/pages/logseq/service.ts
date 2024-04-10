@@ -1,3 +1,4 @@
+// import { removeStopwords, eng } from 'stopword'
 import { BlockSearchType, LogseqBlockType } from '../../types/logseqBlock';
 import LogseqClient from './client';
 import { isBlockIgnore, renderBlock } from './tool';
@@ -15,6 +16,15 @@ export default class LogseqService {
       throw new Error("Error getting graph. Please check if Logseq is running.");
     }
     try {
+      // // commenting this because sometimes it removes important words like Eg:
+      // // stack me first = stack first
+      // // regex is used to split the query using stop words
+      // const splitByStopWords = new RegExp('\\b(?:' + eng.join('|') + ')\\b', 'g'); 
+      // const words = query.split(splitByStopWords).map(w=>w.trim()).filter(word => word !== '');
+
+      // const queryWithoutStopwords = removeStopwords(words, eng).join(' ');
+      // console.log({words, queryWithoutStopwords});
+
       const result = await this.logseqClient.search(query);
       result.blocks = await Promise.all(
         result.blocks.map(async (block) => {
