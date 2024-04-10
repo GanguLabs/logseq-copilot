@@ -39,7 +39,7 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }: { graph: string, p
             // return blockGroup.map((block) => {
             const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
               return (
-                <LogseqBlock key={key} blocks={allBlocksinPage} graph={graph} />
+                <LogseqBlock key={key} blocksPerPage={allBlocksinPage} graph={graph} />
               )
             });
             // });

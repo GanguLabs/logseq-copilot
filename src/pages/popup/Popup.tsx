@@ -93,7 +93,7 @@ export default function Popup() {
           const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
             blockCount += allBlocksinPage.length;
             return (
-              <LogseqBlock key={key} blocks={allBlocksinPage} graph={logseqSearchResult.graph} isPopUp={true} />
+              <LogseqBlock key={key} blocksPerPage={allBlocksinPage} graph={logseqSearchResult.graph} isPopUp={true} />
             )
           });
           // });

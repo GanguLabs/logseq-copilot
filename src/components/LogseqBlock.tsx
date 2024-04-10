@@ -6,20 +6,34 @@ import React, { useEffect } from 'react';
 
 type LogseqBlockProps = {
   graph: string;
-  blocks: LogseqBlockType[];
+  blocksPerPage: LogseqBlockType[];
   isPopUp?: boolean;
 };
 
-export const LogseqBlock = ({ graph, blocks, isPopUp }: LogseqBlockProps) => {
+export const LogseqBlock = ({ graph, blocksPerPage, isPopUp }: LogseqBlockProps) => {
 
-  if(blocks.length === 0) {
+  if(blocksPerPage.length === 0) {
     return <></>;
   }
+
+  const allBlockIds = blocksPerPage.map((block) => block.id);
+  const groupedParentChildBlocks = blocksPerPage.reduce((groups: Record<string, LogseqBlockType[]>, item: LogseqBlockType) => {
+    console.log({groups, item});
+    const isChild = allBlockIds.includes(item.parent.id);
+    const parentId = isChild ? item.parent.id : 'default';
+    const parentGroup = isChild ? groups[parentId] || [] : groups.default;
+    parentGroup.push(item);
+    groups[parentId] = parentGroup;
+
+    return groups;
+  }, {default: []});
+
+  console.log({groupedParentChildBlocks, blocksPerPage})
 
   const [checked, setChecked] = React.useState(false);
   const [status, setStatus] = React.useState('');
 
-  const block = blocks[0]; // TODO: randomyl picking first item - need to change later
+  const block = blocksPerPage[0]; // TODO: randomly picking first item - need to change later
 
   const statusUpdate = (marker: string) => {
     switch (marker) {
@@ -115,7 +129,7 @@ export const LogseqBlock = ({ graph, blocks, isPopUp }: LogseqBlockProps) => {
         </div>
         <div className={styles.blockBody} style={{marginLeft: `${isPopUp ? "-5px": ""}`}}>
           <ul className={styles.blockContentList}>
-            {blocks.map((block: LogseqBlockType) => {
+            {groupedParentChildBlocks.default.map((block: LogseqBlockType) => {
               return(
                 <li className={ [
                   styles.blockContentListItem, 
@@ -133,6 +147,31 @@ export const LogseqBlock = ({ graph, blocks, isPopUp }: LogseqBlockProps) => {
                     <div className={styles.blockContent} dangerouslySetInnerHTML={{ __html: block.html }} />
                     {toBlock(block)}
                   </div>
+                  {groupedParentChildBlocks[block.id] && (
+                    <ul className={styles.blockContentList}>
+                      {groupedParentChildBlocks[block.id].map((childBlock: LogseqBlockType) => {
+                        return (
+                          <li className={[
+                            styles.blockContentListItem,
+                            childBlock.blockSearchType == BlockSearchType.FUZZY_URL ? styles.fuzzyUrlSearch : "",
+                            childBlock.blockSearchType == BlockSearchType.WEBPAGE_TITLE ? styles.webpageTitleSearch : ""
+                          ].join(" ")
+                          }>
+                            {/* {block.blockSearchType == BlockSearchType.FUZZY_URL && 
+                                <span className={styles.fuzzyResultTooltip} title='this block is a result of fuzzy search - searching the website domain'>
+                                  Fuzzy Search
+                                </span>
+                              } */}
+                            <div className={styles.blockContentRoot} >
+                              {markerRender(childBlock.marker)}{' '}
+                              <div className={styles.blockContent} dangerouslySetInnerHTML={{ __html: childBlock.html }} />
+                              {toBlock(childBlock)}
+                            </div>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  )}
                 </li>
               )}
             )}

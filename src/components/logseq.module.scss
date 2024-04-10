@@ -112,6 +112,16 @@
   width: 100%;
   margin: 0 !important;
 }
+.blockContentList .blockContentList{
+  // this is for result from both parent and child blocks
+  margin-left: 3px !important;
+  list-style: square;
+  border-left: 1px solid darkslategray;
+
+  li::marker {
+    color: darkorange;
+  }
+}
 
 .blockContentListItem{
   // @apply list-inside;

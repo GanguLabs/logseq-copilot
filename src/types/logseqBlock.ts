@@ -11,6 +11,8 @@ export type LogseqBlockType = {
   page: LogseqPageIdenity;
   content: string;
   format: string;
+  id: number;
+  parent:{id: number};
   marker: string;
   priority: string;
   blockSearchType?: BlockSearchType;
