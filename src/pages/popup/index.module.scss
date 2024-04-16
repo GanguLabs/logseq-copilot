@@ -68,6 +68,10 @@ body {
     @apply w-fit self-end;
   }
 
+  .blocks {
+    @apply flex flex-col gap-2;
+  }
+
   .config-it {
     @apply rounded-lg h-8 w-full hover:bg-gray-500 shadow-lg border-0;
   }

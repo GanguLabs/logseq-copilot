@@ -107,7 +107,7 @@
 }
 
 .blockBody {
-  @apply flex flex-row flex-wrap gap-2 items-start hover:no-underline ml-3 my-1;
+  @apply flex flex-row flex-wrap gap-2 items-start hover:no-underline my-1;
 }
 
 .blockHeader {
@@ -117,22 +117,30 @@
 .blockContentList{
   width: 100%;
   margin: 0 !important;
+  list-style-type: '•';
+  margin-left: 4px !important;
+  padding-inline-start: 0 !important;
+  &::marker{
+    font-size: large;
+  }
 }
 .blockContentList .blockContentList{
   // this is for result from both parent and child blocks
-  margin-left: 3px !important;
-  list-style: square;
-  border-left: 1px solid darkslategray;
+  margin-left: 6px !important;
+  list-style: "■";
+  // border-left: 1px solid darkslategray;
 
   li::marker {
-    color: darkorange;
+    // color: darkorange;
+    font-size: 6px;
+    margin-right: 3px;
   }
 }
 
 .blockContentListItem{
   // @apply list-inside;
-  padding: 1px 3px;
-  padding-left: 3px !important;
+  // padding: 1px 3px;
+  padding-left: 5px !important;
   border-radius: 3px;
   position: relative;
 

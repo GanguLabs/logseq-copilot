@@ -129,7 +129,7 @@ export const LogseqBlock = ({ graph, blocksPerPage, isPopUp }: LogseqBlockProps)
         <div className={styles.blockHeader}>
           <LogseqPageLink graph={graph} page={block.page}></LogseqPageLink>
         </div>
-        <div className={styles.blockBody} style={{marginLeft: `${isPopUp ? "-5px": ""}`}}>
+        <div className={styles.blockBody}>
           <ul className={styles.blockContentList}>
             {groupedParentChildBlocks.default.map((block: LogseqBlockType) => {
               return(

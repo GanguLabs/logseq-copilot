@@ -128,7 +128,7 @@ export default function Popup() {
                         <AccordionIcon />
                       </AccordionButton>
                     </p>
-                    <AccordionPanel pb={4} className={styles.accordianPanel}>
+                    <AccordionPanel pb={4} className={styles.accordianPanel + " " + styles.blocks}>
                       {logseqPageBlocks}
                     </AccordionPanel>
                   </AccordionItem>
