@@ -125,7 +125,15 @@ export default class LogseqService {
       await find(url.host + url.pathname + url.search + url.hash);
     }
     if (url.search) {
-      await find(url.host + url.pathname + url.search);
+      let searchString = url.host + url.pathname + url.search
+      if(url.host.includes("youtube.com") && url.pathname == '/watch') {
+        searchString = url.searchParams.get('v') || searchString;
+        // for youtube video url's search only for video id
+        // this is useful for video url's from playlist - example below:
+        // https://www.youtube.com/watch?v=VQut4xOcPvE&list=PLFwqDjxup1l2dN53NoPhBvLSJWtN6pZ3o&index=35
+        // https://www.youtube.com/watch?app=desktop&v=ov7seVpQ-ig&embeds_referring_euri=https%3A%2F%2F
+      }
+      await find(searchString);
     }
 
     if (url.pathname && this.isUrlValidForFuzzy(url)) {
@@ -134,11 +142,9 @@ export default class LogseqService {
 
     if(typeof tabTitle =="string" && tabTitle !== ""){
       // typically all brower window titles have company name at the end. Below code removes it from the title
-      const splitTitle = tabTitle.split("-");
-      splitTitle.pop();
-      const titleWithoutCompanyName = splitTitle.join("").trim();
-      // console.log({titleWithoutCompanyName})
-      await caseInsensitiveSearch(titleWithoutCompanyName, BlockSearchType.WEBPAGE_TITLE);
+      const correctedTitle = this.correctTitleToSearch(url, tabTitle);
+
+      await caseInsensitiveSearch(correctedTitle, BlockSearchType.WEBPAGE_TITLE);
     }
 
     const count = blocks.length;
@@ -167,7 +173,7 @@ export default class LogseqService {
     }
 
     if(url.host.includes("google.com") && url.pathname == '/search') {
-      // ignore youtube video's for fuzzy search
+      // ignore google searches for fuzzy search
       return false;
     }
 
@@ -190,11 +196,38 @@ export default class LogseqService {
 
   }
 
+  public correctTitleToSearch(url: URL, tabTitle: string) {
+
+    let titleToSearch = tabTitle;
+
+    const splitTitle = tabTitle.split(" | ");
+    if(splitTitle.length > 1) splitTitle.pop();
+    const titleWithoutCompanyName = splitTitle.join("").trim();
+
+    titleToSearch = titleWithoutCompanyName;
+
+    if(
+      (url.host.includes("google.com") && url.pathname == '/search')
+      || (url.host.includes("bing.com") && url.pathname == '/search')
+      // || (url.host.includes("atlassian.net") || url.host.includes("atlassian.com"))
+      || (url.host.includes("youtube.com"))) {
+      // ignore google searches for fuzzy search
+      const splitTitle = tabTitle.split(" - ");
+      splitTitle.pop();
+      const googleSearchTitle = splitTitle.join("").trim();
+  
+      titleToSearch = googleSearchTitle;
+    }
+
+    return titleToSearch;
+  }
+
   private correctUrlPerWebsite(url: URL) {
     if(url.host.includes("youtube.com") && url.pathname == '/watch') {
       // for youtube url's remove the search params except 'v'
-      // this is usefult for video url's from playlist - example below:
+      // this is useful for video url's from playlist - example below:
       // https://www.youtube.com/watch?v=VQut4xOcPvE&list=PLFwqDjxup1l2dN53NoPhBvLSJWtN6pZ3o&index=35
+      // https://www.youtube.com/watch?app=desktop&v=ov7seVpQ-ig&embeds_referring_euri=https%3A%2F%2Fdev.to%2F&feature=emb_imp_woyt
 
       const searchParamKeys = [];
       for (const key of url.searchParams.keys()) {
@@ -208,6 +241,8 @@ export default class LogseqService {
           }
         })
       }
+      // url.host = ""; // remove the host - so that we only search for v=xxxx for the video
+      // url.pathname = ""; // remove the pathname - so that we only search for v=xxxx for the video
     }
   }
 
