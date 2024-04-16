@@ -52,7 +52,7 @@ export default function Popup() {
       const tabURL = new URL(tab.url);
       const result = await service.urlSearch(tabURL, tab.title ?? "", { fuzzy: true });
 
-      console.log({ result })
+      // console.log({ result })
       if (result.status !== 200) return;
 
       setLogseqSearchResult(result.response!);
@@ -88,7 +88,7 @@ export default function Popup() {
           {logseqSearchResult && groupedBlocks && Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
             // return blockGroup.map((block) => {
             let blockCount = 0;
-            console.log({ searchTypeGroupBlocks })
+            // console.log({ searchTypeGroupBlocks })
             const searchQuery = Object.keys(searchTypeGroupBlocks).length > 0 ? searchTypeGroupBlocks[Object.keys(searchTypeGroupBlocks)[0]][0].searchQuery : "";
             const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
               blockCount += allBlocksinPage.length;

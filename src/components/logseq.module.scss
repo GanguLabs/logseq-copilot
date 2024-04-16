@@ -185,10 +185,24 @@
   position: relative;
   // left: -8px;
   // margin-left: 6px;
+  
 }
 
 .blockContent {
   @apply flex flex-col items-start whitespace-pre-wrap text-sm prose-img:w-full prose-p:my-0 prose-img:my-1;
+
+  // ellipsis on second line
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  // &:hover{
+  //   overflow: visible;
+  //   -webkit-line-clamp: unset;
+  // }
+
   * {
     @apply m-0 break-all text-sm;
   }

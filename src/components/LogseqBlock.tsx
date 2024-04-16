@@ -16,9 +16,11 @@ export const LogseqBlock = ({ graph, blocksPerPage, isPopUp }: LogseqBlockProps)
     return <></>;
   }
 
+  const domParser = new DOMParser();
+
   const allBlockIds = blocksPerPage.map((block) => block.id);
   const groupedParentChildBlocks = blocksPerPage.reduce((groups: Record<string, LogseqBlockType[]>, item: LogseqBlockType) => {
-    console.log({groups, item});
+    // console.log({groups, item});
     const isChild = allBlockIds.includes(item.parent.id);
     const parentId = isChild ? item.parent.id : 'default';
     const parentGroup = isChild ? groups[parentId] || [] : groups.default;
@@ -28,7 +30,7 @@ export const LogseqBlock = ({ graph, blocksPerPage, isPopUp }: LogseqBlockProps)
     return groups;
   }, {default: []});
 
-  console.log({groupedParentChildBlocks, blocksPerPage})
+  // console.log({groupedParentChildBlocks, blocksPerPage})
 
   const [checked, setChecked] = React.useState(false);
   const [status, setStatus] = React.useState('');
@@ -150,6 +152,9 @@ export const LogseqBlock = ({ graph, blocksPerPage, isPopUp }: LogseqBlockProps)
                   {groupedParentChildBlocks[block.id] && (
                     <ul className={styles.blockContentList}>
                       {groupedParentChildBlocks[block.id].map((childBlock: LogseqBlockType) => {
+                        const childBlockHTML = domParser.parseFromString(childBlock.html, 'text/html');
+                        const childInnerText = (childBlockHTML.children[0] as HTMLElement).innerText
+                        // console.log({childBlockHTML, childInnerText})
                         return (
                           <li className={[
                             styles.blockContentListItem,
@@ -164,7 +169,7 @@ export const LogseqBlock = ({ graph, blocksPerPage, isPopUp }: LogseqBlockProps)
                               } */}
                             <div className={styles.blockContentRoot} >
                               {markerRender(childBlock.marker)}{' '}
-                              <div className={styles.blockContent} dangerouslySetInnerHTML={{ __html: childBlock.html }} />
+                              <div className={styles.blockContent} dangerouslySetInnerHTML={{ __html: childBlock.html }} title={childInnerText?.length > 60 ? childInnerText : ""} />
                               {toBlock(childBlock)}
                             </div>
                           </li>

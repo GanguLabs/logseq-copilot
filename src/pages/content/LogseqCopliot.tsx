@@ -62,7 +62,7 @@ export const LogseqCopliot = ({ connect, searchQuery }: LogseqCopliotProps) => {
           <a href="https://github.com/EINDEX/logseq-copilot/issues">Feedback</a>
         </span>
         <span>
-          power by{' '}
+          powered by{' '}
           <a href="https://logseq-copilot.eindex.me/">Logseq Copliot</a>
         </span>
       </div>

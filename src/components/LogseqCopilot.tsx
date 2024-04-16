@@ -21,7 +21,7 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }: { graph: string, p
     return groups;
   }, { default: {} });
 
-  console.log({ groupedBlocks, blocks })
+  console.log({ groupedBlocks, blocks }); // TODO: remove this later after testing
 
   const count = () => {
     return pages.length + blocks.length;
@@ -120,7 +120,7 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }: { graph: string, p
                   // onClick={capture}
                   alt={'Logseq Logo'}
                 />
-                Graph: {graph}
+                <span>Graph: {graph}</span>
                 <span className={styles.popupGroupToolTip}
                   title={`Search Query: ${searchQuery} `}
                 >
