@@ -85,64 +85,71 @@ export default function Popup() {
         </div>
         {/* {logseqSearchResult?.blocks.slice(0, 20).map((block) => ( */}
         <Accordion defaultIndex={[0]} allowToggle>
-        {logseqSearchResult && groupedBlocks && Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
-          // return blockGroup.map((block) => {
-          let blockCount = 0;
-          console.log({searchTypeGroupBlocks})
-          const searchQuery = Object.keys(searchTypeGroupBlocks).length > 0 ? searchTypeGroupBlocks[Object.keys(searchTypeGroupBlocks)[0]][0].searchQuery : "";
-          const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
-            blockCount += allBlocksinPage.length;
-            return (
-              <LogseqBlock key={key} blocksPerPage={allBlocksinPage} graph={logseqSearchResult.graph} isPopUp={true} />
-            )
-          });
-          // });
+          {logseqSearchResult && groupedBlocks && Object.entries(groupedBlocks).map(([key, searchTypeGroupBlocks], i) => {
+            // return blockGroup.map((block) => {
+            let blockCount = 0;
+            console.log({ searchTypeGroupBlocks })
+            const searchQuery = Object.keys(searchTypeGroupBlocks).length > 0 ? searchTypeGroupBlocks[Object.keys(searchTypeGroupBlocks)[0]][0].searchQuery : "";
+            const logseqPageBlocks = Object.entries(searchTypeGroupBlocks).map(([key, allBlocksinPage], i) => {
+              blockCount += allBlocksinPage.length;
+              return (
+                <LogseqBlock key={key} blocksPerPage={allBlocksinPage} graph={logseqSearchResult.graph} isPopUp={true} />
+              )
+            });
+            // });
 
-          return (
-            <>
-              {logseqPageBlocks.length > 0 ?
-                <AccordionItem className={`rounded-lg ${styles.accordianItem}`}>
-                  <p>
-                    <AccordionButton _expanded={{ bg: 'darkslateblue', color: 'white' }}
-                      title={`this block is a result of ${key} - ${key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
-                    >
-                      <Box style={{display: "flex", maxWidth: "95%"}} as="span" flex='1' textAlign='left'>
-                        <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                          {`${searchQuery} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
-                        </span>
-                        {/* {key !== "default" && */}
+            const blockCountInfo = `(${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`;
+            const accordianTitle = (
+              key == "default" ? "Default Search" :
+                `this block is a result of ${key} - ` +
+                `${key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`
+            ) + ` - ${blockCountInfo}`
+
+            return (
+              <>
+                {logseqPageBlocks.length > 0 ?
+                  <AccordionItem className={`rounded-lg ${styles.accordianItem}`}>
+                    <p>
+                      <AccordionButton _expanded={{ bg: 'darkslateblue', color: 'white' }}
+                        title={accordianTitle}
+                      >
+                        <Box style={{ display: "flex", maxWidth: "95%" }} as="span" flex='1' textAlign='left'>
+                          <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                            {searchQuery ?? "" + " " + blockCountInfo}
+                          </span>
+                          {/* {key !== "default" && */}
                           <span className={styles.popupGroupToolTip}
-                            title={searchQuery ? `Search Query(${key}): ${searchQuery}` : "" }
+                            title={searchQuery ? `Search Query(${key}): ${searchQuery}` : ""}
                           >
                             🔍
                           </span>
-                        {/* } */}
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </p>
-                  <AccordionPanel pb={4} className={styles.accordianPanel}>
-                    {logseqPageBlocks}
-                  </AccordionPanel>
-                </AccordionItem>
-                // <details open>
-                //   <summary>
-                //     {`${key} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
-                //     {key !== "default" && 
-                //       <span className={styles.popupGroupToolTip} 
-                //         title={`this block is a result of ${key} - ${ key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
-                //       >
-                //         🔍
-                //       </span>
-                //     }
-                //   </summary>
-                //   {logseqPageBlocks}
-                // </details>
-                : <></>
-              }
-            </>
-          )
-        })}
+                          {/* } */}
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </p>
+                    <AccordionPanel pb={4} className={styles.accordianPanel}>
+                      {logseqPageBlocks}
+                    </AccordionPanel>
+                  </AccordionItem>
+                  // <details open>
+                  //   <summary>
+                  //     {`${key} (${logseqPageBlocks.length}-pages, ${blockCount}-blocks)`}
+                  //     {key !== "default" && 
+                  //       <span className={styles.popupGroupToolTip} 
+                  //         title={`this block is a result of ${key} - ${ key == BlockSearchType.FUZZY_URL ? "searching the website domain" : "searching the webpage title"}`}
+                  //       >
+                  //         🔍
+                  //       </span>
+                  //     }
+                  //   </summary>
+                  //   {logseqPageBlocks}
+                  // </details>
+                  : <></>
+                }
+              </>
+            )
+          })}
         </Accordion>
         {/* ))} */}
       </div>
