@@ -151,6 +151,22 @@
     //   display: initial;
     // }
   }
+
+  pre {
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: red;
+    font-size: xx-large;
+    line-height: unset;
+    code {
+      color: initial;
+      font-size: initial;
+      line-height: initial;
+    }
+  }
   // &.webpageTitleSearch{
   //   background: hsla(185, 68%, 42%, 0.15);
   // }
