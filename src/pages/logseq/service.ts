@@ -1,7 +1,7 @@
 // import { removeStopwords, eng } from 'stopword'
 import { BlockSearchType, LogseqBlockType } from '../../types/logseqBlock';
 import LogseqClient from './client';
-import { isBlockIgnore, renderBlock } from './tool';
+import { cleanBlock, isBlockIgnore, renderBlock } from './tool';
 
 export default class LogseqService {
   private logseqClient: LogseqClient = new LogseqClient();
@@ -65,6 +65,25 @@ export default class LogseqService {
     const block = await this.logseqClient.getBlockViaUuid(blockUuid, {
       includeChildren,
     });
+    if(block.refs?.length > 0){
+      // console.log({content: block.content, blockRefs: block.refs});
+      const blockRefRegex = /\(?\(\((.*?)\)\)\)?/gm;
+      const matches = block.content.matchAll(blockRefRegex);
+      for (const match of matches) {
+        if(match[1]){
+          const blockRefUuid = match[1];
+          const blockRefContent = await this.logseqClient.getBlockViaUuid(blockRefUuid, {
+            includeChildren,
+          });
+          const cleanContent = cleanBlock(blockRefContent);
+          const blockContent = block.content;
+          const replacedContent = blockContent.replace(blockRefUuid, cleanContent);
+          block.content = replacedContent;
+          console.log("ReplacedContent", block.content)
+        }
+      }
+
+    }
     block.page = await this.logseqClient.getPage(block.page);
     return renderBlock(block, graph, query);
   }

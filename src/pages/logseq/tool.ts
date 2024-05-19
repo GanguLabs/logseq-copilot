@@ -15,9 +15,13 @@ export const cleanBlock = (block: LogseqBlockType): string => {
     result = result.replace(`[#${block.priority}]`, '');
   }
 
+  const propertiesRegex = /\n(.*?)::\s?(.*?)(?=(?:\n|\Z|$))/gm; // /^[\w.-]+::.*?$/gm - old regex  which works
+  // this propertiesRegex split the properties into individual groups
+  // const propertiesRegex = new RegExp('\\n(.*?)::\\s?(.*?)(?=(?:\\n|\\Z|$))', 'gm');
+
   return result
     .replaceAll(/!\[.*?\]\(\.\.\/assets.*?\)/gim, '')
-    .replaceAll(/^[\w-]+::.*?$/gim, '') // clean properties
+    .replaceAll(propertiesRegex, '') // clean properties
     .replaceAll(/{{renderer .*?}}/gim, '') // clean renderer
     .replaceAll(/^deadline: <.*?>$/gim, '') // clean deadline
     .replaceAll(/^scheduled: <.*?>$/gim, '') // clean schedule
