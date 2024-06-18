@@ -114,9 +114,19 @@ export const renderBlock = (
   const cleanContent = cleanBlock(block);
   marked.use({
     gfm: true,
-    tables: true,
+    // tables: true,
     walkTokens: query ? highlightTokens(query) : undefined,
     extensions: [logseqLinkExt(graphName, query)],
+    renderer: {
+      // renderer is used to target html elemens and customize them
+      // ref: https://marked.js.org/using_pro#renderer
+      link: function (href, title, text) {
+        return `<a href="${href}" target="_blank" title="${href}">${text}</a>`;
+      },
+      // code: function (code, language) {
+      //   return `<pre><code class="language-${language}">${code.toString()}</code></pre>`;
+      // },
+    },
   });
   const html = marked.parse(cleanContent).trim();
 

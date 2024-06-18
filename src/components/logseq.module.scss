@@ -135,12 +135,16 @@
     font-size: 6px;
     margin-right: 3px;
   }
+
+  .blockContentListItem {
+    width: 96%;
+  }
 }
 
 .blockContentListItem{
   // @apply list-inside;
   // padding: 1px 3px;
-  padding-left: 5px !important;
+  padding: 0 5px;
   border-radius: 3px;
   position: relative;
 
@@ -250,6 +254,31 @@
 
   pre {
     @apply overflow-x-auto whitespace-pre-wrap;
+  }
+
+  table{
+    border-collapse: collapse;
+    width: 100%;
+
+    td, th {
+      border: 1px solid hsla(0, 0%, 100%, 0.1);
+      padding: 8px;
+    }
+
+    tr:nth-child(even){
+      background-color: hsla(0, 0%, 75%, 0.3);
+    }
+
+    tr:hover {
+      background-color: hsla(0, 0%, 69%, 0.5);
+    }
+
+    th {
+      padding: 8px 12px;
+      text-align: left;
+      background-color: rgb(0, 42, 53);
+      // color: white;
+    }
   }
 }
 
