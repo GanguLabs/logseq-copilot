@@ -30,17 +30,21 @@ export class Google extends SearchingEngine {
 
   gotElement(): Element {
     const container = document.createElement('div');
+	container.id='logseq-copilot-rhs';
     const asideElement = document.getElementById('rhs');
 
     const hasAside = !!asideElement;
 
     if (hasAside) {
+	  container.style.maxHeight = '300px';
+	  container.style.overflow = 'auto';
       asideElement.insertBefore(container, asideElement.firstChild);
     } else {
       const noAsideElement = document.getElementById('rcnt');
       noAsideElement!.appendChild(container);
       container.id = 'rhs';
     }
+	container.style.gridColumn = '14/span 8';
     return container;
   }
 }
