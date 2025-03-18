@@ -133,7 +133,7 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }: { graph: string, p
             </Box>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel pb={4} className={styles.accordianPanel + ' ' + hasAside ? styles.copilotBodyOverflow : ''}>
+          <AccordionPanel p={4} className={styles.accordianPanel + ' ' + hasAside ? styles.copilotBodyOverflow : ''}>
             {pagesRender()}
             {blocksRender()}
           </AccordionPanel>

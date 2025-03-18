@@ -3,6 +3,9 @@
 
 .copilot {
   @apply flex flex-col w-full max-w-sm gap-2 pb-4;
+  background: rgb(0, 42, 53);
+  border-radius: 5px;
+  padding: 3px;
 
   ul,
   ol {
