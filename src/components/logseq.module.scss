@@ -58,6 +58,11 @@
   @apply px-1;
 }
 
+.copilotBodyOverflow {
+	max-height: 300px;
+    overflow: auto;
+}
+
 .popupGroupToolTip {
   background: firebrick;
   opacity: 0.5;

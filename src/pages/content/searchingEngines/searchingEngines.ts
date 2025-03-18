@@ -36,8 +36,6 @@ export class Google extends SearchingEngine {
     const hasAside = !!asideElement;
 
     if (hasAside) {
-	  container.style.maxHeight = '300px';
-	  container.style.overflow = 'auto';
       asideElement.insertBefore(container, asideElement.firstChild);
     } else {
       const noAsideElement = document.getElementById('rcnt');

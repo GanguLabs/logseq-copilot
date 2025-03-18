@@ -104,6 +104,8 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }: { graph: string, p
     );
   }
 
+  const hasAside = !!document.getElementById('rhs');
+
   return (
     <>
       <Accordion defaultIndex={[0]} allowToggle>
@@ -131,7 +133,7 @@ const LogseqCopilot = ({ graph, pages, blocks, searchQuery }: { graph: string, p
             </Box>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel pb={4} className={styles.accordianPanel}>
+          <AccordionPanel pb={4} className={styles.accordianPanel + ' ' + hasAside ? styles.copilotBodyOverflow : ''}>
             {pagesRender()}
             {blocksRender()}
           </AccordionPanel>
